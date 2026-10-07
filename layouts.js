@@ -147,3 +147,45 @@ function applyLua(address, r) {
     + "hl.dispatch(hl.dsp.window.resize({ x = " + r.w + ", y = " + r.h + ", window = " + w + " })) "
     + "hl.dispatch(hl.dsp.window.move({ x = " + r.x + ", y = " + r.y + ", window = " + w + " }))"
 }
+
+// Whether a zone spans the full height, which is what tiling can reproduce:
+// layouts size tiled windows by width (dwindle split, scrolling column).
+function fullHeight(z) {
+  return z[1] < 1e-6 && z[1] + z[3] > 1 - 1e-6
+}
+
+// A window's frame (`at`/`size` plus border) as fractions of the usable
+// area, for saved arrangements; fromFractions() maps it back on whatever
+// size that monitor has next time.
+function toFractions(a, at, size) {
+  var b = a.border
+  return [(at[0] - b - a.x) / a.w, (at[1] - b - a.y) / a.h, (size[0] + 2 * b) / a.w, (size[1] + 2 * b) / a.h]
+}
+
+function fromFractions(a, f) {
+  var x0 = Math.round(a.x + f[0] * a.w), y0 = Math.round(a.y + f[1] * a.h)
+  var x1 = Math.round(a.x + (f[0] + f[2]) * a.w), y1 = Math.round(a.y + (f[1] + f[3]) * a.h)
+  return { x: x0 + a.border, y: y0 + a.border, w: x1 - x0 - 2 * a.border, h: y1 - y0 - 2 * a.border,
+           frameX: x0, frameY: y0, frameW: x1 - x0, frameH: y1 - y0 }
+}
+
+// The monitor entry holding a global point, or null.
+function monitorAt(mons, opts, px, py) {
+  for (var i = 0; i < mons.length; i++) {
+    var a = area(mons[i], opts)
+    if (px >= a.monX && px < a.monX + a.width && py >= a.monY && py < a.monY + a.height) return mons[i]
+  }
+  return null
+}
+
+function luaWindow(address) {
+  return "'address:" + address + "'"
+}
+
+function moveToWorkspaceLua(address, workspace) {
+  return "hl.dispatch(hl.dsp.window.move({ workspace = '" + workspace + "', follow = false, window = " + luaWindow(address) + " }))"
+}
+
+function tileLua(address) {
+  return "hl.dispatch(hl.dsp.window.float({ action = 'disable', window = " + luaWindow(address) + " }))"
+}

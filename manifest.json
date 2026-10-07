@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "id": "dbarke.zones",
   "name": "Zones",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "dbarke",
   "license": "MIT",
-  "description": "Snap the active window into a zone of its monitor, with layouts suggested for that monitor's shape: thirds on an ultrawide, halves on a laptop.",
+  "description": "Snap windows into monitor-aware zones from the keyboard or while dragging, tile or float, and save arrangements that return when the monitor reconnects.",
   "kinds": [
     "overlay"
   ],
