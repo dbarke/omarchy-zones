@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "dbarke.zones",
+  "name": "Zones",
+  "version": "0.1.0",
+  "author": "dbarke",
+  "license": "MIT",
+  "description": "Snap the active window into a zone of its monitor, with layouts suggested for that monitor's shape: thirds on an ultrawide, halves on a laptop.",
+  "kinds": [
+    "overlay"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "overlay": "Zones.qml"
+  }
+}
